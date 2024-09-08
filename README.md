@@ -1,5 +1,7 @@
 # Avocab
 
+![Avocab Logo](https://i.ibb.co/0YmkfTf/avocab-2.png)
+
 ## Overview
 Avocab is a modern, user-friendly web application that serves as a comprehensive English dictionary with support for translations into Lao. Designed for language learners, travelers, and anyone looking to expand their vocabulary, Avocab provides instant access to word meanings, synonyms, antonyms, and translations.
 
