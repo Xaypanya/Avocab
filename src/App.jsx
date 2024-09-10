@@ -28,7 +28,7 @@ function App() {
     },
     {
       "id": 2,
-      "lao": "ເຕົາອບ",
+      "lao": "ເຕົາອົບ",
       "english": "cooker",
       "type": "noun",
       "favorite": false
@@ -36,7 +36,7 @@ function App() {
     {
       "id": 3,
       "lao": "ສຳເນົາ",
-      "english": "copy",
+      "english": "Copy",
       "type": "noun, verb",
       "favorite": false
     },
@@ -61,118 +61,7 @@ function App() {
       "type": "verb",
       "favorite": false
     },
-    {
-      "id": 7,
-      "lao": "ຄູ່",
-      "english": "couple",
-      "type": "noun",
-      "favorite": false
-    },
-    {
-      "id": 8,
-      "lao": "ປົກຄຸມ",
-      "english": "cover",
-      "type": "verb",
-      "favorite": false
-    },
-    {
-      "id": 9,
-      "lao": "ບ້າ",
-      "english": "crazy",
-      "type": "adjective",
-      "favorite": false
-    },
-    {
-      "id": 10,
-      "lao": "ສ້າງສັນ",
-      "english": "creative",
-      "type": "adjective",
-      "favorite": false
-    },
-    {
-      "id": 11,
-      "lao": "ເຄຣິດິດ",
-      "english": "credit",
-      "type": "noun",
-      "favorite": false
-    },
-    {
-      "id": 12,
-      "lao": "ອາຊະຍາກຳ",
-      "english": "crime",
-      "type": "noun",
-      "favorite": false
-    },
-    {
-      "id": 13,
-      "lao": "ອາຊະຍາກອນ",
-      "english": "criminal",
-      "type": "noun, adjective",
-      "favorite": false
-    },
-    {
-      "id": 14,
-      "lao": "ຂໍ້ມູນ",
-      "english": "cross",
-      "type": "verb, noun",
-      "favorite": false
-    },
-    {
-      "id": 15,
-      "lao": "ຝູງຊົນ",
-      "english": "crowd",
-      "type": "noun",
-      "favorite": false
-    },
-    {
-      "id": 16,
-      "lao": "ແອອດ",
-      "english": "crowded",
-      "type": "adjective",
-      "favorite": false
-    },
-    {
-      "id": 17,
-      "lao": "ຮ້ອງໄຫ້",
-      "english": "cry",
-      "type": "verb",
-      "favorite": false
-    },
-    {
-      "id": 18,
-      "lao": "ຕູ້ເກັບສິນຄ້າ",
-      "english": "cupboard",
-      "type": "noun",
-      "favorite": false
-    },
-    {
-      "id": 19,
-      "lao": "ຫຍິກ",
-      "english": "curly",
-      "type": "adjective",
-      "favorite": false
-    },
-    {
-      "id": 20,
-      "lao": "ວົນຈອນ",
-      "english": "cycle",
-      "type": "noun, verb",
-      "favorite": false
-    },
-    {
-      "id": 21,
-      "lao": "ປະຈໍາມື້",
-      "english": "daily",
-      "type": "adjective",
-      "favorite": false
-    },
-    {
-      "id": 22,
-      "lao": "ອັນຕະລາຍ",
-      "english": "danger",
-      "type": "noun",
-      "favorite": false
-    }
+ 
   ]);
 
   const toggleFavorite = (id) => {
@@ -200,7 +89,7 @@ function App() {
         backgroundSize: "20px 20px",
       }}
     >
-      <div className="w-5/6 lg:w-3/4 xl:w-2/4 2xl:1/4 mx-auto">
+      <div className="w-5/6 md:3/6 lg:w-2/4 xl:w-1/4 2xl:1/4 mx-auto">
         <HeaderBar isEnglish={isEnglish} setSearchTerm={setSearchTerm} />
 
         <div className="fixed top-14 right-6 space-x-2">
