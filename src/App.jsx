@@ -3,7 +3,12 @@ import HeaderBar from "./components/HeaderBar";
 import WordCard from "./components/WordCard";
 import { LAOS_FLAG, UK_FLAG } from "./constants";
 
+import supabase from "./supabaseClient";
+
 function App() {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [isEnglish, setIsEnglish] = useState(() => {
     const savedLanguage = localStorage.getItem("language");
     return savedLanguage ? JSON.parse(savedLanguage) : true;
@@ -18,51 +23,7 @@ function App() {
   };
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [words, setWords] = useState([
-    {
-      "id": 1,
-      "lao": "ສະບາຍດີ",
-      "english": "Hello",
-      "type": "greeting",
-      "favorite": false
-    },
-    {
-      "id": 2,
-      "lao": "ເຕົາອົບ",
-      "english": "cooker",
-      "type": "noun",
-      "favorite": false
-    },
-    {
-      "id": 3,
-      "lao": "ສຳເນົາ",
-      "english": "Copy",
-      "type": "noun, verb",
-      "favorite": false
-    },
-    {
-      "id": 4,
-      "lao": "ມຸມ",
-      "english": "corner",
-      "type": "noun",
-      "favorite": false
-    },
-    {
-      "id": 5,
-      "lao": "ຢ່າງຖືກຕ້ອງ",
-      "english": "correctly",
-      "type": "adverb",
-      "favorite": false
-    },
-    {
-      "id": 6,
-      "lao": "ນັບ",
-      "english": "count",
-      "type": "verb",
-      "favorite": false
-    },
- 
-  ]);
+  const [words, setWords] = useState();
 
   const toggleFavorite = (id) => {
     setWords(
@@ -72,11 +33,35 @@ function App() {
     );
   };
 
-  const filteredWords = words.filter((word) =>
-    (isEnglish
-      ? word.english.toLowerCase().includes(searchTerm.toLowerCase())
-      : word.lao.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  useEffect(() => {
+    const fetchWords = async () => {
+      try {
+        const { data, error } = await supabase.from("words").select("*");
+
+        if (error) {
+          throw error;
+        }
+
+        console.log("words", data);
+
+        setWords(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWords();
+  }, []);
+
+  const filteredWords = words
+    ? words?.filter((word) =>
+        isEnglish
+          ? word.english.toLowerCase().includes(searchTerm.toLowerCase())
+          : word.lao.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
 
   return (
     <div
@@ -91,7 +76,9 @@ function App() {
     >
       <div className="w-5/6 md:3/6 lg:w-2/4 xl:w-1/4 2xl:1/4 mx-auto">
         <HeaderBar isEnglish={isEnglish} setSearchTerm={setSearchTerm} />
-
+        isLoading = {JSON.stringify(loading)}
+        <br />
+        words = {JSON.stringify(words)}
         <div className="fixed top-14 right-6 space-x-2">
           <button
             onClick={toggleLanguage}
@@ -104,7 +91,6 @@ function App() {
             />
           </button>
         </div>
-
         <div className="space-y-4 mt-4">
           {filteredWords.map((word) => (
             <WordCard
