@@ -4,6 +4,7 @@ import WordCard from "./components/WordCard";
 import { LAOS_FLAG, UK_FLAG, PAGE_LIMIT, GITHUB_ICON } from "./constants";
 import dictionary from "./assets/lang/dictionary.json";
 import supabase from "./supabaseClient";
+import { ArrowUpFromDot } from "lucide-react";
 import ThreeDotLoading from "./components/ThreeDotLoading";
 import Lottie from "lottie-react";
 import emptyAnimation from "./assets/lottie/empty-animation.json";
@@ -70,7 +71,10 @@ function App() {
 
   // Handle infinite scrolling
   const handleScroll = useCallback(() => {
-    if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 100) {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight - 100
+    ) {
       if (!loading && !loadingMore && hasMore) {
         setPage((prevPage) => prevPage + 1);
       }
@@ -86,7 +90,10 @@ function App() {
   const toggleLanguage = () => setIsEnglish((prev) => !prev);
 
   // Navigate to GitHub
-  const goToGithub = () => window.open("https://github.com/Xaypanya/Avocab", "_blank");
+  const goToGithub = () =>
+    window.open("https://github.com/Xaypanya/Avocab", "_blank");
+
+  const goToTop = () => window.scrollTo(0, 0);
 
   return (
     <div
@@ -116,11 +123,15 @@ function App() {
             onClick={goToGithub}
             className="border-black flex items-center justify-center border-2 rounded-full hover:bg-gray-200 active:bg-gray-300 w-8 h-8"
           >
-            <img
-              src={GITHUB_ICON}
-              className="w-6 h-6"
-              alt="GitHub Icon"
-            />
+            <img src={GITHUB_ICON} className="w-6 h-6" alt="GitHub Icon" />
+          </button>
+        </div>
+        <div className="fixed flex flex-col bottom-14 right-6">
+          <button
+            onClick={goToTop}
+            className="border-black hover:shadow-lg bg-avocab-400 hover:bg-avocab-500 active:bg-avocab-600 flex items-center justify-center border-2 rounded-full  w-8 h-14"
+          >
+            <ArrowUpFromDot className="text-black"/>
           </button>
         </div>
         <div className="space-y-4 mt-4">
