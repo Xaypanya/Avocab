@@ -2,8 +2,13 @@ import { useState, useEffect } from "react";
 import HeaderBar from "./components/HeaderBar";
 import WordCard from "./components/WordCard";
 import { LAOS_FLAG, UK_FLAG } from "./constants";
+import dictionary from "./assets/lang/dictionary.json";
 
 import supabase from "./supabaseClient";
+import ThreeDotLoading from "./components/ThreeDotLoading";
+
+import Lottie from "lottie-react";
+import emptyAnimation from "./assets/lottie/empty-animation.json";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -23,7 +28,7 @@ function App() {
   };
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [words, setWords] = useState();
+  const [words, setWords] = useState([]);
 
   const toggleFavorite = (id) => {
     setWords(
@@ -36,13 +41,24 @@ function App() {
   useEffect(() => {
     const fetchWords = async () => {
       try {
-        const { data, error } = await supabase.from("words").select("*");
+        setLoading(true);
+
+        // Perform search based on language and limit results to 10
+        let query = supabase.from("words").select("*").limit(10);
+
+        if (searchTerm) {
+          if (isEnglish) {
+            query = query.ilike("english", `%${searchTerm}%`);
+          } else {
+            query = query.ilike("lao", `%${searchTerm}%`);
+          }
+        }
+
+        const { data, error } = await query;
 
         if (error) {
           throw error;
         }
-
-        console.log("words", data);
 
         setWords(data);
       } catch (error) {
@@ -53,15 +69,9 @@ function App() {
     };
 
     fetchWords();
-  }, []);
+  }, [searchTerm, isEnglish]);
 
-  const filteredWords = words
-    ? words?.filter((word) =>
-        isEnglish
-          ? word.english.toLowerCase().includes(searchTerm.toLowerCase())
-          : word.lao.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : [];
+
 
   return (
     <div
@@ -76,9 +86,6 @@ function App() {
     >
       <div className="w-5/6 md:3/6 lg:w-2/4 xl:w-1/4 2xl:1/4 mx-auto">
         <HeaderBar isEnglish={isEnglish} setSearchTerm={setSearchTerm} />
-        isLoading = {JSON.stringify(loading)}
-        <br />
-        words = {JSON.stringify(words)}
         <div className="fixed top-14 right-6 space-x-2">
           <button
             onClick={toggleLanguage}
@@ -92,13 +99,25 @@ function App() {
           </button>
         </div>
         <div className="space-y-4 mt-4">
-          {filteredWords.map((word) => (
-            <WordCard
-              key={word.id}
-              word={word}
-              toggleFavorite={() => toggleFavorite(word.id)}
-            />
-          ))}
+          {loading ? (
+            <ThreeDotLoading />
+          ) : words.length === 0 ? (
+            <div className="flex flex-col space-y-4 justify-center items-center">
+              <div className="h-64 w-64 ">
+                <Lottie animationData={emptyAnimation} loop={true} />
+              </div>
+              <p className="text-gray-500 -translate-y-12"> {dictionary.words_not_found[isEnglish ? "en" : "la"]} </p>
+            </div>
+          ) : (
+            words.map((word) => (
+              <WordCard
+                key={word.id}
+                word={word}
+                toggleFavorite={() => toggleFavorite(word.id)}
+              />
+            ))
+          )}
+          {error && <p className="text-red-500">{error}</p>}
         </div>
       </div>
     </div>

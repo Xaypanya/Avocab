@@ -24,6 +24,10 @@ const WordCard = ({ word, toggleFavorite }) => {
       getVoices();
     }
   };
+
+
+  const capitalizeFirstLetter = str => str && str[0].toUpperCase() + str.slice(1);
+
   return (
     <div className="p-4 bg-white border-2 border-black rounded-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transform transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] w-full">
       <div className="flex justify-between items-start">
@@ -34,7 +38,7 @@ const WordCard = ({ word, toggleFavorite }) => {
               alt="UK Flag"
               className="w-6 h-6 bg-red-500 rounded-full border border-black"
             />
-            <h2 className="text-lg font-bold">{word.english}</h2>
+            <h2 className="text-lg font-bold">{capitalizeFirstLetter(word.english)}</h2>
           </div>
           <div className="flex items-center space-x-2 mb-3">
             <img
