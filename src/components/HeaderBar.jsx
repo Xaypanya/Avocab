@@ -2,6 +2,7 @@ import React from "react";
 const avocabLogo = "avocab.svg";
 // import json lang dictionary
 import dictionary from "../assets/lang/dictionary.json";
+import DropDownWordType from "./DropDownWordType";
 
 function HeaderBar({ isEnglish, setSearchTerm  }) {
   return (
@@ -15,6 +16,7 @@ function HeaderBar({ isEnglish, setSearchTerm  }) {
         className="w-100 text-gray-800 placeholder:text-gray-600 text-center border-black border-2 p-2.5 focus:outline-none focus:shadow-[2px_2px_0px_rgba(0,0,0,1)] bg-white-400 active:shadow-[2px_2px_0px_rgba(0,0,0,1)] rounded-full"
         placeholder={dictionary.placeholder_search[isEnglish ? "en" : "la"]}
       />
+      <DropDownWordType/>
     </div>
   );
 }

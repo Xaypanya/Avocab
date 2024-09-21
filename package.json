@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.3",
+    "classnames": "^2.5.1",
     "dotenv": "^16.4.5",
     "lottie-react": "^2.4.0",
     "lucide-react": "^0.439.0",

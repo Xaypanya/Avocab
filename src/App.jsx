@@ -89,6 +89,17 @@ function App() {
   // Toggle language
   const toggleLanguage = () => setIsEnglish((prev) => !prev);
 
+
+   // Toggle favorite
+   const toggleFavorite = (id) => {
+     setWords((prevWords) =>
+       prevWords.map((word) =>
+         word.id === id ? { ...word, favorite: !word.favorite } : word
+       )
+     );
+   };
+ 
+
   // Navigate to GitHub
   const goToGithub = () =>
     window.open("https://github.com/Xaypanya/Avocab", "_blank");
@@ -106,6 +117,7 @@ function App() {
         backgroundSize: "20px 20px",
       }}
     >
+      words {JSON.stringify(words)}
       <div className="w-5/6 md:3/6 lg:w-2/4 xl:w-1/4 2xl:1/4 mx-auto">
         <HeaderBar isEnglish={isEnglish} setSearchTerm={setSearchTerm} />
         <div className="fixed flex flex-col top-14 right-6 space-y-2">
