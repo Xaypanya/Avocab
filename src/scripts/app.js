@@ -15,7 +15,6 @@ const state = {
 };
 
 const wordListEl = document.getElementById("word-list");
-const loadingEl = document.getElementById("loading");
 const loadingMoreEl = document.getElementById("loading-more");
 const emptyStateEl = document.getElementById("empty-state");
 const emptyStateTextEl = document.getElementById("empty-state-text");
@@ -101,8 +100,6 @@ let emptyAnim = null;
 function render() {
   const filtered = getFilteredWords();
   const visible = filtered.slice(0, state.page * PAGE_LIMIT);
-
-  loadingEl.classList.add("hidden");
 
   if (visible.length === 0) {
     wordListEl.innerHTML = "";
