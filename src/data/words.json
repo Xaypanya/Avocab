@@ -1,0 +1,12 @@
+[
+  { "id": 1, "slug": "hello", "english": "hello", "lao": "ສະບາຍດີ", "type": "greeting" },
+  { "id": 2, "slug": "thank-you", "english": "thank you", "lao": "ຂອບໃຈ", "type": "greeting" },
+  { "id": 3, "slug": "water", "english": "water", "lao": "ນ້ຳ", "type": "noun" },
+  { "id": 4, "slug": "eat", "english": "eat", "lao": "ກິນ", "type": "verb" },
+  { "id": 5, "slug": "beautiful", "english": "beautiful", "lao": "ງາມ", "type": "adjective" },
+  { "id": 6, "slug": "friend", "english": "friend", "lao": "ໝູ່", "type": "noun" },
+  { "id": 7, "slug": "good", "english": "good", "lao": "ດີ", "type": "adjective" },
+  { "id": 8, "slug": "go", "english": "go", "lao": "ໄປ", "type": "verb" },
+  { "id": 9, "slug": "love", "english": "love", "lao": "ຮັກ", "type": "verb" },
+  { "id": 10, "slug": "book", "english": "book", "lao": "ປຶ້ມ", "type": "noun" }
+]

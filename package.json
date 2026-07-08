@@ -1,37 +1,24 @@
 {
   "name": "avocab",
+  "version": "0.1.0",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "deploy": "gh-pages -d dist"
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.45.3",
-    "dotenv": "^16.4.5",
-    "lottie-react": "^2.4.0",
-    "lucide-react": "^0.439.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "astro build && gh-pages -d dist"
   },
   "devDependencies": {
-    "@eslint/js": "^9.9.0",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.20",
-    "eslint": "^9.9.0",
-    "eslint-plugin-react": "^7.35.0",
-    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
-    "eslint-plugin-react-refresh": "^0.4.9",
     "gh-pages": "^6.1.1",
-    "globals": "^15.9.0",
     "postcss": "^8.4.45",
-    "tailwindcss": "^3.4.10",
-    "vite": "^5.4.1"
+    "tailwindcss": "^3.4.10"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/tailwind": "^6.0.2",
+    "astro": "^7.0.6",
+    "lottie-web": "^5.13.0"
   }
 }

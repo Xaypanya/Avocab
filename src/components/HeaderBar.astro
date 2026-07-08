@@ -1,0 +1,23 @@
+---
+import dictionary from "../assets/lang/dictionary.json";
+---
+
+<div class="flex flex-col justify-center items-center py-4">
+  <div class="flex space-x-2 justify-center items-center text-center mb-4">
+    <img
+      src={`${import.meta.env.BASE_URL}avocab.svg`}
+      alt="avocab logo"
+      class="w-12 h-12 transform rotate-12"
+    />
+    <h1 class="font-pops text-2xl transform -rotate-2 border-b-2 border-gray-800">
+      Avocab
+    </h1>
+  </div>
+  <input
+    id="search-input"
+    class="w-100 text-gray-800 placeholder:text-gray-600 text-center border-black border-2 p-2.5 focus:outline-none focus:shadow-[2px_2px_0px_rgba(0,0,0,1)] bg-white-400 active:shadow-[2px_2px_0px_rgba(0,0,0,1)] rounded-full"
+    placeholder={dictionary.placeholder_search.en}
+    data-placeholder-en={dictionary.placeholder_search.en}
+    data-placeholder-la={dictionary.placeholder_search.la}
+  />
+</div>

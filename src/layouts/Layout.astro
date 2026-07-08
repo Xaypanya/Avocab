@@ -1,0 +1,48 @@
+---
+import "../index.css";
+
+const {
+  title = "Avocab - English to Lao Dictionary",
+  description = "Avocab is a free English to Lao dictionary web app that provides translations and pronunciation to help you learn new words daily.",
+  keywords = "English to Lao dictionary, Avocab, Lao translations, English dictionary, vocabulary learning, language app",
+  canonicalPath = "/",
+} = Astro.props;
+
+const canonicalURL = new URL(
+  `${import.meta.env.BASE_URL}${canonicalPath.replace(/^\//, "")}`,
+  Astro.site
+);
+const ogImage = "https://i.ibb.co/6yyr540/avocab.png";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}avocab.svg`} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Xaypanya Phongsa" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImage} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <meta name="google-site-verification" content="5f_brwJPraACEUBJBjOm9XqvB_D53hjDAzfDW_qmjkQ" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
