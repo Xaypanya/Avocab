@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import HeaderBar from "../components/HeaderBar.astro";
-import ThreeDotLoading from "../components/ThreeDotLoading.astro";
 import { GITHUB_ICON } from "../constants";
 ---
 
@@ -45,9 +44,6 @@ import { GITHUB_ICON } from "../constants";
       </div>
 
       <div class="space-y-4 mt-4">
-        <div id="loading-more" class="flex justify-center items-center py-4 hidden">
-          <ThreeDotLoading />
-        </div>
         <div id="empty-state" class="flex flex-col space-y-4 justify-center items-center hidden">
           <div id="empty-lottie" class="h-64 w-64"></div>
           <p id="empty-state-text" class="text-gray-500 -translate-y-12"></p>

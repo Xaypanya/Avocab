@@ -15,7 +15,6 @@ const state = {
 };
 
 const wordListEl = document.getElementById("word-list");
-const loadingMoreEl = document.getElementById("loading-more");
 const emptyStateEl = document.getElementById("empty-state");
 const emptyStateTextEl = document.getElementById("empty-state-text");
 const searchInputEl = document.getElementById("search-input");
@@ -118,8 +117,6 @@ function render() {
     emptyStateEl.classList.add("hidden");
     wordListEl.innerHTML = visible.map(cardHtml).join("");
   }
-
-  loadingMoreEl.classList.toggle("hidden", visible.length >= filtered.length);
 }
 
 function updateLanguageUI() {
