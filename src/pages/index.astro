@@ -32,6 +32,15 @@ import { GITHUB_ICON } from "../constants";
         >
           <img src={GITHUB_ICON} class="w-6 h-6" alt="GitHub Icon" />
         </a>
+        <button
+          id="favorites-filter-toggle"
+          type="button"
+          class="border-black flex items-center justify-center border-2 rounded-full hover:bg-gray-200 active:bg-gray-300 w-8 h-8 bg-white"
+          aria-pressed="false"
+          aria-label="Show favourite words"
+        >
+          <svg id="favorites-filter-icon" class="w-5 h-5 fill-none stroke-black" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        </button>
       </div>
 
       <div class="fixed flex flex-col bottom-14 right-6">

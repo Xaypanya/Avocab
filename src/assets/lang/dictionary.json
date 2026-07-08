@@ -6,5 +6,9 @@
   "words_not_found": {
     "en": "Words not found",
     "la": "ບໍ່ພົບຄຳສັບ"
+  },
+  "no_favorites": {
+    "en": "No favourite words yet",
+    "la": "ຍັງບໍ່ມີຄຳສັບທີ່ມັກ"
   }
 }

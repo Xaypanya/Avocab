@@ -12,6 +12,7 @@ const state = {
   searchTerm: "",
   page: 1,
   favorites: new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? "[]")),
+  showFavoritesOnly: false,
 };
 
 const wordListEl = document.getElementById("word-list");
@@ -21,6 +22,8 @@ const searchInputEl = document.getElementById("search-input");
 const languageToggleBtn = document.getElementById("language-toggle");
 const languageFlagImg = document.getElementById("language-flag");
 const goToTopBtn = document.getElementById("go-to-top");
+const favoritesFilterBtn = document.getElementById("favorites-filter-toggle");
+const favoritesFilterIcon = document.getElementById("favorites-filter-icon");
 
 const UK_FLAG = "https://hatscripts.github.io/circle-flags/flags/gb.svg";
 const LAOS_FLAG = "https://hatscripts.github.io/circle-flags/flags/la.svg";
@@ -85,13 +88,22 @@ function toggleFavorite(id) {
 }
 
 function getFilteredWords() {
-  if (!state.searchTerm) return words;
-  const term = state.searchTerm.toLowerCase();
-  return words.filter((w) =>
-    state.isEnglish
-      ? w.english.toLowerCase().includes(term)
-      : w.lao.includes(state.searchTerm)
-  );
+  let result = words;
+
+  if (state.showFavoritesOnly) {
+    result = result.filter((w) => state.favorites.has(w.id));
+  }
+
+  if (state.searchTerm) {
+    const term = state.searchTerm.toLowerCase();
+    result = result.filter((w) =>
+      state.isEnglish
+        ? w.english.toLowerCase().includes(term)
+        : w.lao.includes(state.searchTerm)
+    );
+  }
+
+  return result;
 }
 
 let emptyAnim = null;
@@ -103,7 +115,8 @@ function render() {
   if (visible.length === 0) {
     wordListEl.innerHTML = "";
     emptyStateEl.classList.remove("hidden");
-    emptyStateTextEl.textContent = dictionary.words_not_found[state.isEnglish ? "en" : "la"];
+    const emptyKey = state.showFavoritesOnly && !state.searchTerm ? "no_favorites" : "words_not_found";
+    emptyStateTextEl.textContent = dictionary[emptyKey][state.isEnglish ? "en" : "la"];
     if (!emptyAnim) {
       emptyAnim = lottie.loadAnimation({
         container: document.getElementById("empty-lottie"),
@@ -137,6 +150,23 @@ languageToggleBtn.addEventListener("click", () => {
   state.isEnglish = !state.isEnglish;
   localStorage.setItem(LANGUAGE_KEY, JSON.stringify(state.isEnglish));
   updateLanguageUI();
+  render();
+});
+
+function updateFavoritesFilterUI() {
+  favoritesFilterBtn.setAttribute("aria-pressed", String(state.showFavoritesOnly));
+  favoritesFilterBtn.classList.toggle("bg-red-500", state.showFavoritesOnly);
+  favoritesFilterBtn.classList.toggle("bg-white", !state.showFavoritesOnly);
+  favoritesFilterIcon.classList.toggle("fill-white", state.showFavoritesOnly);
+  favoritesFilterIcon.classList.toggle("stroke-white", state.showFavoritesOnly);
+  favoritesFilterIcon.classList.toggle("fill-none", !state.showFavoritesOnly);
+  favoritesFilterIcon.classList.toggle("stroke-black", !state.showFavoritesOnly);
+}
+
+favoritesFilterBtn.addEventListener("click", () => {
+  state.showFavoritesOnly = !state.showFavoritesOnly;
+  state.page = 1;
+  updateFavoritesFilterUI();
   render();
 });
 
