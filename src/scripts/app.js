@@ -76,9 +76,21 @@ function rowHtml(word) {
   `;
 }
 
-// sticky A-Z / ກ-ຮ section header, like a printed dictionary
+// sticky A-Z / ກ-ຮ section header, like a printed dictionary.
+// Pins flush below the search bar via a measured offset (see updateStickyOffset),
+// not a hardcoded guess — otherwise a scrolling row can peek through the gap.
 function letterHeaderHtml(letter) {
-  return `<div class="sticky top-[64px] z-10 px-3 py-1 bg-avocab-400 border-y border-black text-xs font-bold tracking-widest">${letter}</div>`;
+  return `<div class="letter-header sticky z-10 px-3 py-1 bg-avocab-400 border-y border-black text-xs font-bold tracking-widest" style="top: var(--sticky-offset, 0px)">${letter}</div>`;
+}
+
+const searchStickyWrapperEl = document.getElementById("search-sticky-wrapper");
+
+function updateStickyOffset() {
+  if (!searchStickyWrapperEl) return;
+  document.documentElement.style.setProperty(
+    "--sticky-offset",
+    `${searchStickyWrapperEl.getBoundingClientRect().height}px`
+  );
 }
 
 function letterOf(word) {
@@ -215,6 +227,7 @@ languageToggleBtn.addEventListener("click", () => {
   state.isEnglish = !state.isEnglish;
   localStorage.setItem(LANGUAGE_KEY, JSON.stringify(state.isEnglish));
   updateLanguageUI();
+  updateStickyOffset();
   render();
 });
 
@@ -263,6 +276,9 @@ window.addEventListener("scroll", () => {
   }
 });
 
+window.addEventListener("resize", updateStickyOffset);
+
 updateLanguageUI();
 updateSearchPairUI();
+updateStickyOffset();
 render();

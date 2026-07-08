@@ -3,8 +3,8 @@ import dictionary from "../assets/lang/dictionary.json";
 import { GITHUB_ICON } from "../constants";
 ---
 
-<div class="pt-4 pb-2">
-  <div class="flex items-center justify-between gap-2 mb-3">
+<div class="pt-1 pb-2">
+  <div class="flex items-center justify-between gap-2">
     <div class="flex items-center gap-2 min-w-0">
       <img
         src={`${import.meta.env.BASE_URL}avocab.svg`}
@@ -47,9 +47,19 @@ import { GITHUB_ICON } from "../constants";
       </a>
     </div>
   </div>
+</div>
 
+<!--
+  Deliberately a sibling of the title-row block above, NOT nested inside it.
+  position: sticky only holds within the bounds of its parent's box — if this
+  lived inside the small header div, it would "unstick" the moment that short
+  div scrolled past, leaving a gap the letter-header offset couldn't account
+  for. As a direct child of index.astro's page-height container, it stays
+  pinned for the whole scroll.
+-->
+<div id="search-sticky-wrapper" class="sticky top-0 z-20 bg-white pt-1 pb-2">
   <div
-    class="sticky top-2 z-20 flex items-stretch bg-white border-2 border-black rounded-lg shadow-[3px_3px_0px_rgba(0,0,0,1)] overflow-hidden"
+    class="flex items-stretch bg-white border-2 border-black rounded-lg shadow-[3px_3px_0px_rgba(0,0,0,1)] overflow-hidden"
   >
     <span class="flex items-center pl-3 pr-1 text-gray-500" aria-hidden="true">
       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
