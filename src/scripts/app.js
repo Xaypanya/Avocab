@@ -6,9 +6,14 @@ import lottie from "lottie-web";
 const PAGE_LIMIT = 5;
 const FAVORITES_KEY = "avocab_favorites";
 const LANGUAGE_KEY = "language";
+const SEARCH_LANG_KEY = "avocab_search_lang";
 
 const state = {
+  // UI language: which language the interface copy (placeholder, empty-state text) is shown in.
   isEnglish: JSON.parse(localStorage.getItem(LANGUAGE_KEY) ?? "true"),
+  // Search pair: which field (english or lao) the search term is matched against.
+  // Deliberately independent of isEnglish — you can read the UI in English while searching Lao words, or vice versa.
+  searchLang: localStorage.getItem(SEARCH_LANG_KEY) ?? "en",
   searchTerm: "",
   page: 1,
   favorites: new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? "[]")),
@@ -24,6 +29,8 @@ const languageFlagImg = document.getElementById("language-flag");
 const goToTopBtn = document.getElementById("go-to-top");
 const favoritesFilterBtn = document.getElementById("favorites-filter-toggle");
 const favoritesFilterIcon = document.getElementById("favorites-filter-icon");
+const searchPairEnBtn = document.getElementById("search-pair-en");
+const searchPairLaBtn = document.getElementById("search-pair-la");
 
 const UK_FLAG = "https://hatscripts.github.io/circle-flags/flags/gb.svg";
 const LAOS_FLAG = "https://hatscripts.github.io/circle-flags/flags/la.svg";
@@ -97,7 +104,7 @@ function getFilteredWords() {
   if (state.searchTerm) {
     const term = state.searchTerm.toLowerCase();
     result = result.filter((w) =>
-      state.isEnglish
+      state.searchLang === "en"
         ? w.english.toLowerCase().includes(term)
         : w.lao.includes(state.searchTerm)
     );
@@ -145,6 +152,28 @@ searchInputEl.addEventListener("input", (e) => {
   state.page = 1;
   render();
 });
+
+function updateSearchPairUI() {
+  const isEn = state.searchLang === "en";
+  searchPairEnBtn.classList.toggle("bg-avocab-400", isEn);
+  searchPairEnBtn.classList.toggle("bg-white", !isEn);
+  searchPairEnBtn.setAttribute("aria-checked", String(isEn));
+  searchPairLaBtn.classList.toggle("bg-avocab-400", !isEn);
+  searchPairLaBtn.classList.toggle("bg-white", isEn);
+  searchPairLaBtn.setAttribute("aria-checked", String(!isEn));
+}
+
+function setSearchLang(lang) {
+  if (state.searchLang === lang) return;
+  state.searchLang = lang;
+  localStorage.setItem(SEARCH_LANG_KEY, lang);
+  state.page = 1;
+  updateSearchPairUI();
+  render();
+}
+
+searchPairEnBtn.addEventListener("click", () => setSearchLang("en"));
+searchPairLaBtn.addEventListener("click", () => setSearchLang("la"));
 
 languageToggleBtn.addEventListener("click", () => {
   state.isEnglish = !state.isEnglish;
@@ -199,4 +228,5 @@ window.addEventListener("scroll", () => {
 });
 
 updateLanguageUI();
+updateSearchPairUI();
 render();

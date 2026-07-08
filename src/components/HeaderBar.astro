@@ -20,4 +20,34 @@ import dictionary from "../assets/lang/dictionary.json";
     data-placeholder-en={dictionary.placeholder_search.en}
     data-placeholder-la={dictionary.placeholder_search.la}
   />
+
+  <div
+    id="search-pair-selector"
+    class="flex items-center border-black border-2 rounded-full mt-2 overflow-hidden"
+    role="radiogroup"
+    aria-label="Search language"
+  >
+    <button
+      type="button"
+      id="search-pair-en"
+      class="search-pair-option flex items-center gap-1.5 px-3 py-1 text-sm font-medium transition-colors bg-avocab-400"
+      role="radio"
+      aria-checked="true"
+      data-lang="en"
+    >
+      <img src="https://hatscripts.github.io/circle-flags/flags/gb.svg" alt="" class="w-4 h-4" />
+      <span>English</span>
+    </button>
+    <button
+      type="button"
+      id="search-pair-la"
+      class="search-pair-option flex items-center gap-1.5 px-3 py-1 text-sm font-medium transition-colors bg-white border-l-2 border-black"
+      role="radio"
+      aria-checked="false"
+      data-lang="la"
+    >
+      <img src="https://hatscripts.github.io/circle-flags/flags/la.svg" alt="" class="w-4 h-4" />
+      <span>Lao</span>
+    </button>
+  </div>
 </div>
