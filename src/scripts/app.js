@@ -3,7 +3,7 @@ import dictionary from "../assets/lang/dictionary.json";
 import emptyAnimation from "../assets/lottie/empty-animation.json";
 import lottie from "lottie-web";
 
-const PAGE_LIMIT = 5;
+const PAGE_LIMIT = 30;
 const FAVORITES_KEY = "avocab_favorites";
 const LANGUAGE_KEY = "language";
 const SEARCH_LANG_KEY = "avocab_search_lang";
@@ -38,33 +38,52 @@ const LAOS_FLAG = "https://hatscripts.github.io/circle-flags/flags/la.svg";
 const capitalize = (str) => (str ? str[0].toUpperCase() + str.slice(1) : str);
 const base = import.meta.env.BASE_URL;
 
-function cardHtml(word) {
+// real-dictionary part-of-speech abbreviations
+const POS_ABBR = {
+  noun: "n.", verb: "v.", adjective: "adj.", adverb: "adv.", pronoun: "pron.",
+  preposition: "prep.", conjunction: "conj.", interjection: "interj.",
+  number: "num.", particle: "part.", phrase: "phr.", greeting: "interj.",
+  character: "char.", proverb: "prov.",
+};
+const posAbbr = (t) => POS_ABBR[t] ?? t;
+
+// dictionaries are alphabetical: pre-sort once per direction
+const wordsByEn = [...words].sort((a, b) => a.english.localeCompare(b.english, "en"));
+const wordsByLa = [...words].sort((a, b) => a.lao.localeCompare(b.lao, "lo"));
+
+// one compact dictionary row: headword · pos · translation + inline actions
+function rowHtml(word) {
   const isFav = state.favorites.has(word.id);
+  const en = state.searchLang === "en";
+  const head = en ? capitalize(word.english) : word.lao;
+  const trans = en ? word.lao : capitalize(word.english);
   return `
-    <div class="word-card p-4 bg-white border-2 border-black rounded-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transform transition-transform hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] w-full" data-id="${word.id}">
-      <div class="flex justify-between items-start">
-        <div class="flex-grow">
-          <div class="flex items-center space-x-2 mb-3">
-            <img src="${UK_FLAG}" alt="UK Flag" class="w-6 h-6 bg-red-500 rounded-full border border-black" />
-            <a href="${base}word/${word.slug}/" class="text-lg font-bold hover:underline">${capitalize(word.english)}</a>
-          </div>
-          <div class="flex items-center space-x-2 mb-3">
-            <img src="${LAOS_FLAG}" alt="Laos Flag" class="w-6 h-6 bg-blue-500 rounded-full border border-black" />
-            <p class="text-md">${word.lao}</p>
-          </div>
-          <p class="text-sm text-gray-600 mt-2 bg-gray-100 inline-block px-2 py-1 rounded-full border border-gray-300">${word.type}</p>
-        </div>
-        <div class="flex flex-col items-center justify-center space-y-4">
-          <button type="button" class="play-audio-btn p-1 border-2 border-black rounded-lg bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 transition-colors" data-english="${word.english}" aria-label="Play pronunciation of ${word.english}">
-            <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
-          </button>
-          <button type="button" class="favorite-btn p-1 ${isFav ? "bg-red-500" : "bg-white"} border-2 border-black rounded-full w-10 h-10 flex items-center justify-center" data-id="${word.id}" aria-label="Toggle favorite for ${word.english}">
-            <svg class="favorite-icon h-5 w-5 ${isFav ? "fill-white stroke-white" : "fill-none stroke-black"}" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-          </button>
-        </div>
+    <div class="word-row flex items-center gap-2 px-3 py-2 border-b border-gray-200 last:border-b-0 hover:bg-avocab-50" data-id="${word.id}">
+      <div class="flex-1 min-w-0">
+        <span class="inline-flex items-baseline gap-1.5 flex-wrap">
+          <a href="${base}word/${word.slug}/" class="font-bold text-[15px] leading-snug hover:underline">${head}</a>
+          <span class="italic text-[11px] text-gray-500">${posAbbr(word.type)}</span>
+        </span>
+        <span class="block text-[15px] text-gray-700 leading-snug truncate">${trans}</span>
       </div>
+      <button type="button" class="play-audio-btn shrink-0 w-9 h-9 flex items-center justify-center border-2 border-black rounded-lg bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 transition-colors" data-english="${word.english}" aria-label="Play pronunciation of ${word.english}">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+      </button>
+      <button type="button" class="favorite-btn shrink-0 w-9 h-9 flex items-center justify-center border-2 border-black rounded-lg ${isFav ? "bg-red-500" : "bg-white"}" data-id="${word.id}" aria-label="Toggle favorite for ${word.english}">
+        <svg class="favorite-icon h-4 w-4 ${isFav ? "fill-white stroke-white" : "fill-none stroke-black"}" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+      </button>
     </div>
   `;
+}
+
+// sticky A-Z / ກ-ຮ section header, like a printed dictionary
+function letterHeaderHtml(letter) {
+  return `<div class="sticky top-[64px] z-10 px-3 py-1 bg-avocab-400 border-y border-black text-xs font-bold tracking-widest">${letter}</div>`;
+}
+
+function letterOf(word) {
+  const s = state.searchLang === "en" ? word.english : word.lao;
+  return (s[0] || "").toUpperCase();
 }
 
 function playAudio(englishText) {
@@ -95,7 +114,7 @@ function toggleFavorite(id) {
 }
 
 function getFilteredWords() {
-  let result = words;
+  let result = state.searchLang === "en" ? wordsByEn : wordsByLa;
 
   if (state.showFavoritesOnly) {
     result = result.filter((w) => state.favorites.has(w.id));
@@ -135,8 +154,25 @@ function render() {
     }
   } else {
     emptyStateEl.classList.add("hidden");
-    wordListEl.innerHTML = visible.map(cardHtml).join("");
+    // group under letter headers like a printed dictionary (skip while searching)
+    let html = "";
+    if (state.searchTerm) {
+      html = visible.map(rowHtml).join("");
+    } else {
+      let current = null;
+      for (const w of visible) {
+        const l = letterOf(w);
+        if (l !== current) {
+          current = l;
+          html += letterHeaderHtml(l);
+        }
+        html += rowHtml(w);
+      }
+    }
+    wordListEl.innerHTML = html;
   }
+  const countEl = document.getElementById("result-count");
+  if (countEl) countEl.textContent = `${filtered.length.toLocaleString()} entries`;
 }
 
 function updateLanguageUI() {

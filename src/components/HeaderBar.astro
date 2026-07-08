@@ -1,53 +1,90 @@
 ---
 import dictionary from "../assets/lang/dictionary.json";
+import { GITHUB_ICON } from "../constants";
 ---
 
-<div class="flex flex-col justify-center items-center py-4">
-  <div class="flex space-x-2 justify-center items-center text-center mb-4">
-    <img
-      src={`${import.meta.env.BASE_URL}avocab.svg`}
-      alt="avocab logo"
-      class="w-12 h-12 transform rotate-12"
-    />
-    <h1 class="font-pops text-2xl transform -rotate-2 border-b-2 border-gray-800">
-      Avocab
-    </h1>
+<div class="pt-4 pb-2">
+  <div class="flex items-center justify-between gap-2 mb-3">
+    <div class="flex items-center gap-2 min-w-0">
+      <img
+        src={`${import.meta.env.BASE_URL}avocab.svg`}
+        alt="avocab logo"
+        class="w-8 h-8 transform rotate-12"
+      />
+      <h1 class="font-pops text-xl border-b-2 border-gray-800">Avocab</h1>
+      <span class="text-[11px] text-gray-500 self-end pb-0.5 hidden sm:inline">EN·ລາວ dictionary</span>
+    </div>
+    <div class="flex items-center gap-1.5 shrink-0">
+      <button
+        id="language-toggle"
+        class="border-black flex items-center justify-center border-2 rounded-full hover:bg-gray-200 active:bg-gray-300 w-9 h-9 bg-white"
+        aria-label="Toggle interface language"
+      >
+        <img
+          id="language-flag"
+          src="https://hatscripts.github.io/circle-flags/flags/gb.svg"
+          alt="UK flag"
+          class="w-5 h-5"
+        />
+      </button>
+      <button
+        id="favorites-filter-toggle"
+        type="button"
+        class="border-black flex items-center justify-center border-2 rounded-full hover:bg-gray-200 active:bg-gray-300 w-9 h-9 bg-white"
+        aria-pressed="false"
+        aria-label="Show favourite words"
+      >
+        <svg id="favorites-filter-icon" class="w-4 h-4 fill-none stroke-black" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+      </button>
+      <a
+        href="https://github.com/Xaypanya/Avocab"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="border-black flex items-center justify-center border-2 rounded-full hover:bg-gray-200 active:bg-gray-300 w-9 h-9 bg-white"
+        aria-label="GitHub repository"
+      >
+        <img src={GITHUB_ICON} class="w-5 h-5" alt="" />
+      </a>
+    </div>
   </div>
-  <input
-    id="search-input"
-    class="w-100 text-gray-800 placeholder:text-gray-600 text-center border-black border-2 p-2.5 focus:outline-none focus:shadow-[2px_2px_0px_rgba(0,0,0,1)] bg-white-400 active:shadow-[2px_2px_0px_rgba(0,0,0,1)] rounded-full"
-    placeholder={dictionary.placeholder_search.en}
-    data-placeholder-en={dictionary.placeholder_search.en}
-    data-placeholder-la={dictionary.placeholder_search.la}
-  />
 
   <div
-    id="search-pair-selector"
-    class="flex items-center border-black border-2 rounded-full mt-2 overflow-hidden"
-    role="radiogroup"
-    aria-label="Search language"
+    class="sticky top-2 z-20 flex items-stretch bg-white border-2 border-black rounded-lg shadow-[3px_3px_0px_rgba(0,0,0,1)] overflow-hidden"
   >
-    <button
-      type="button"
-      id="search-pair-en"
-      class="search-pair-option flex items-center gap-1.5 px-3 py-1 text-sm font-medium transition-colors bg-avocab-400"
-      role="radio"
-      aria-checked="true"
-      data-lang="en"
+    <span class="flex items-center pl-3 pr-1 text-gray-500" aria-hidden="true">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+    </span>
+    <input
+      id="search-input"
+      type="search"
+      autocomplete="off"
+      class="flex-1 min-w-0 text-gray-900 placeholder:text-gray-500 text-[16px] px-2 py-2.5 focus:outline-none bg-transparent"
+      placeholder={dictionary.placeholder_search.en}
+      data-placeholder-en={dictionary.placeholder_search.en}
+      data-placeholder-la={dictionary.placeholder_search.la}
+    />
+    <div
+      id="search-pair-selector"
+      class="flex items-stretch border-l-2 border-black"
+      role="radiogroup"
+      aria-label="Search language"
     >
-      <img src="https://hatscripts.github.io/circle-flags/flags/gb.svg" alt="" class="w-4 h-4" />
-      <span>English</span>
-    </button>
-    <button
-      type="button"
-      id="search-pair-la"
-      class="search-pair-option flex items-center gap-1.5 px-3 py-1 text-sm font-medium transition-colors bg-white border-l-2 border-black"
-      role="radio"
-      aria-checked="false"
-      data-lang="la"
-    >
-      <img src="https://hatscripts.github.io/circle-flags/flags/la.svg" alt="" class="w-4 h-4" />
-      <span>Lao</span>
-    </button>
+      <button
+        type="button"
+        id="search-pair-en"
+        class="search-pair-option px-3 text-sm font-semibold transition-colors bg-avocab-400 min-w-[44px]"
+        role="radio"
+        aria-checked="true"
+        data-lang="en"
+      >EN</button>
+      <button
+        type="button"
+        id="search-pair-la"
+        class="search-pair-option px-3 text-sm font-semibold transition-colors bg-white border-l-2 border-black min-w-[44px]"
+        role="radio"
+        aria-checked="false"
+        data-lang="la"
+      >ລາວ</button>
+    </div>
   </div>
 </div>
